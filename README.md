@@ -8,7 +8,7 @@ Projet Easylab AI — construit pour Artur.
 
 ## Jouer en ligne
 
-> Lien Netlify à venir après le premier déploiement.
+**https://mario-phaser-easylab.netlify.app**
 
 ---
 
