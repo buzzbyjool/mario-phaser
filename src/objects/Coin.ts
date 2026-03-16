@@ -8,7 +8,8 @@ export class Coin extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'piece');
 
     scene.add.existing(this);
-    scene.physics.add.existing(this, true); // statique
+    scene.physics.add.existing(this);
+    (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
     this.setSize(16, 16);
 
