@@ -9,7 +9,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   private direction = -1; // -1 = gauche, 1 = droite
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'ennemi', 0);
+    super(scene, x, y, 'ennemi0');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -20,13 +20,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setOffset(2, 4);
     this.setVelocityX(this.vitesse * this.direction);
 
-    // Animation marche
     if (!scene.anims.exists('ennemi-walk')) {
       scene.anims.create({
         key: 'ennemi-walk',
-        frames: scene.anims.generateFrameNumbers('ennemi', { start: 0, end: 1 }),
-        frameRate: 4,
-        repeat: -1,
+        frames: [{ key: 'ennemi0' }, { key: 'ennemi1' }],
+        frameRate: 4, repeat: -1,
       });
     }
     this.anims.play('ennemi-walk');

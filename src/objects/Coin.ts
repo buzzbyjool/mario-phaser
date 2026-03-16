@@ -5,7 +5,7 @@ import Phaser from 'phaser';
  */
 export class Coin extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'piece', 0);
+    super(scene, x, y, 'piece');
 
     scene.add.existing(this);
     scene.physics.add.existing(this, true); // statique
@@ -14,12 +14,7 @@ export class Coin extends Phaser.Physics.Arcade.Sprite {
 
     // Animation de rotation
     if (!scene.anims.exists('piece-spin')) {
-      scene.anims.create({
-        key: 'piece-spin',
-        frames: scene.anims.generateFrameNumbers('piece', { start: 0, end: 3 }),
-        frameRate: 8,
-        repeat: -1,
-      });
+      scene.anims.create({ key: 'piece-spin', frames: [{ key: 'piece' }], frameRate: 8, repeat: -1 });
     }
     this.anims.play('piece-spin');
   }

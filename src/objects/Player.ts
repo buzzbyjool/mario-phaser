@@ -21,7 +21,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private sautPrecedent = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'mario', 0);
+    super(scene, x, y, 'mario0');
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -41,27 +41,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   private creerAnimations(): void {
+    // Les animations sont créées dans BootScene — on vérifie juste qu'elles existent
     if (!this.scene.anims.exists('mario-idle')) {
-      this.scene.anims.create({
-        key: 'mario-idle',
-        frames: [{ key: 'mario', frame: 0 }],
-        frameRate: 1,
-      });
+      this.scene.anims.create({ key: 'mario-idle', frames: [{ key: 'mario0' }], frameRate: 1 });
     }
     if (!this.scene.anims.exists('mario-run')) {
       this.scene.anims.create({
         key: 'mario-run',
-        frames: this.scene.anims.generateFrameNumbers('mario', { start: 1, end: 2 }),
-        frameRate: 8,
-        repeat: -1,
+        frames: [{ key: 'mario1' }, { key: 'mario2' }],
+        frameRate: 8, repeat: -1,
       });
     }
     if (!this.scene.anims.exists('mario-jump')) {
-      this.scene.anims.create({
-        key: 'mario-jump',
-        frames: [{ key: 'mario', frame: 3 }],
-        frameRate: 1,
-      });
+      this.scene.anims.create({ key: 'mario-jump', frames: [{ key: 'mario3' }], frameRate: 1 });
     }
   }
 
