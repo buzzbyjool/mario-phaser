@@ -5,8 +5,7 @@ import { Coin } from '../objects/Coin';
 
 /** Dimensions du monde */
 const MONDE_LARGEUR = 4000;
-const MONDE_HAUTEUR = 600;
-const SOL_Y = MONDE_HAUTEUR - 32;
+// MONDE_HAUTEUR et SOL_Y calculés dynamiquement depuis la hauteur écran
 
 /**
  * Scène principale du jeu : un niveau complet avec plateformes,
@@ -25,6 +24,9 @@ export class GameScene extends Phaser.Scene {
     super({ key: 'GameScene' });
   }
 
+  private get MONDE_HAUTEUR(): number { return this.scale.height; }
+  private get SOL_Y(): number { return this.scale.height - 32; }
+
   create(): void {
     this.score = 0;
 
@@ -32,7 +34,7 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#5C94FC');
 
     // Limites du monde
-    this.physics.world.setBounds(0, 0, MONDE_LARGEUR, MONDE_HAUTEUR);
+    this.physics.world.setBounds(0, 0, MONDE_LARGEUR, this.MONDE_HAUTEUR);
 
     // Nuages de fond (parallaxe simple)
     this.creerNuages();
@@ -43,12 +45,12 @@ export class GameScene extends Phaser.Scene {
     this.creerPlateformes();
 
     // Drapeau de fin
-    const drapeau = this.physics.add.staticImage(MONDE_LARGEUR - 100, SOL_Y - 96, 'drapeau');
+    const drapeau = this.physics.add.staticImage(MONDE_LARGEUR - 100, this.SOL_Y - 96, 'drapeau');
     drapeau.setOrigin(0.5, 0.5);
     drapeau.refreshBody();
 
     // Joueur
-    this.player = new Player(this, 100, SOL_Y - 60);
+    this.player = new Player(this, 100, this.SOL_Y - 60);
 
     // Ennemis
     this.ennemis = this.physics.add.group({ runChildUpdate: true });
@@ -91,7 +93,7 @@ export class GameScene extends Phaser.Scene {
 
     // Caméra qui suit le joueur
     this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
-    this.cameras.main.setBounds(0, 0, MONDE_LARGEUR, MONDE_HAUTEUR);
+    this.cameras.main.setBounds(0, 0, MONDE_LARGEUR, this.MONDE_HAUTEUR);
 
     // Interface utilisateur (fixée à la caméra)
     this.creerUI();
@@ -108,7 +110,7 @@ export class GameScene extends Phaser.Scene {
     this.viesText.setText(`Vies: ${this.player.vies}`);
 
     // Mort par chute dans le vide
-    if (this.player.y > MONDE_HAUTEUR + 50) {
+    if (this.player.y > this.MONDE_HAUTEUR + 50) {
       this.player.vies = 0;
       this.gameOver();
     }
@@ -142,9 +144,9 @@ export class GameScene extends Phaser.Scene {
       // Trou dans le sol à certains endroits pour le challenge
       if ((x >= 1200 && x <= 1280) || (x >= 2600 && x <= 2700)) continue;
 
-      this.plateformes.create(x + 16, SOL_Y, 'sol');
+      this.plateformes.create(x + 16, this.SOL_Y, 'sol');
       // Deuxième couche sous le sol
-      this.plateformes.create(x + 16, SOL_Y + 32, 'sol');
+      this.plateformes.create(x + 16, this.SOL_Y + 32, 'sol');
     }
   }
 
@@ -153,25 +155,25 @@ export class GameScene extends Phaser.Scene {
     // Définition des plateformes : [x, y, nombre de blocs]
     const defs: [number, number, number][] = [
       // Premières plateformes (zone tutoriel)
-      [300, SOL_Y - 100, 3],
-      [500, SOL_Y - 180, 4],
+      [300, this.SOL_Y - 100, 3],
+      [500, this.SOL_Y - 180, 4],
       // Zone intermédiaire
-      [800, SOL_Y - 120, 3],
-      [1000, SOL_Y - 200, 5],
-      [1150, SOL_Y - 80, 2],
+      [800, this.SOL_Y - 120, 3],
+      [1000, this.SOL_Y - 200, 5],
+      [1150, this.SOL_Y - 80, 2],
       // Après le premier trou
-      [1350, SOL_Y - 140, 4],
-      [1600, SOL_Y - 220, 3],
+      [1350, this.SOL_Y - 140, 4],
+      [1600, this.SOL_Y - 220, 3],
       // Zone avancée
-      [1900, SOL_Y - 100, 3],
-      [2100, SOL_Y - 180, 4],
-      [2350, SOL_Y - 260, 3],
+      [1900, this.SOL_Y - 100, 3],
+      [2100, this.SOL_Y - 180, 4],
+      [2350, this.SOL_Y - 260, 3],
       // Après le deuxième trou
-      [2800, SOL_Y - 120, 3],
-      [3050, SOL_Y - 200, 4],
+      [2800, this.SOL_Y - 120, 3],
+      [3050, this.SOL_Y - 200, 4],
       // Zone finale
-      [3350, SOL_Y - 140, 5],
-      [3600, SOL_Y - 80, 3],
+      [3350, this.SOL_Y - 140, 5],
+      [3600, this.SOL_Y - 80, 3],
     ];
 
     for (const [startX, y, count] of defs) {
@@ -184,10 +186,10 @@ export class GameScene extends Phaser.Scene {
   /** Place les ennemis sur le terrain */
   private creerEnnemis(): void {
     const positions = [
-      { x: 600, y: SOL_Y - 32 },
-      { x: 1050, y: SOL_Y - 232 },
-      { x: 1800, y: SOL_Y - 32 },
-      { x: 3100, y: SOL_Y - 232 },
+      { x: 600, y: this.SOL_Y - 32 },
+      { x: 1050, y: this.SOL_Y - 232 },
+      { x: 1800, y: this.SOL_Y - 32 },
+      { x: 3100, y: this.SOL_Y - 232 },
     ];
 
     for (const pos of positions) {
@@ -201,30 +203,30 @@ export class GameScene extends Phaser.Scene {
     // Pièces au-dessus des plateformes et en l'air
     const positions = [
       // Zone tutoriel
-      { x: 300, y: SOL_Y - 140 },
-      { x: 332, y: SOL_Y - 140 },
-      { x: 364, y: SOL_Y - 140 },
-      { x: 520, y: SOL_Y - 220 },
-      { x: 552, y: SOL_Y - 220 },
+      { x: 300, y: this.SOL_Y - 140 },
+      { x: 332, y: this.SOL_Y - 140 },
+      { x: 364, y: this.SOL_Y - 140 },
+      { x: 520, y: this.SOL_Y - 220 },
+      { x: 552, y: this.SOL_Y - 220 },
       // Zone intermédiaire
-      { x: 830, y: SOL_Y - 160 },
-      { x: 862, y: SOL_Y - 160 },
-      { x: 1020, y: SOL_Y - 240 },
-      { x: 1052, y: SOL_Y - 240 },
-      { x: 1084, y: SOL_Y - 240 },
+      { x: 830, y: this.SOL_Y - 160 },
+      { x: 862, y: this.SOL_Y - 160 },
+      { x: 1020, y: this.SOL_Y - 240 },
+      { x: 1052, y: this.SOL_Y - 240 },
+      { x: 1084, y: this.SOL_Y - 240 },
       // Après premier trou
-      { x: 1380, y: SOL_Y - 180 },
-      { x: 1412, y: SOL_Y - 180 },
-      { x: 1620, y: SOL_Y - 260 },
-      { x: 1652, y: SOL_Y - 260 },
+      { x: 1380, y: this.SOL_Y - 180 },
+      { x: 1412, y: this.SOL_Y - 180 },
+      { x: 1620, y: this.SOL_Y - 260 },
+      { x: 1652, y: this.SOL_Y - 260 },
       // Zone avancée
-      { x: 1930, y: SOL_Y - 140 },
-      { x: 2130, y: SOL_Y - 220 },
-      { x: 2162, y: SOL_Y - 220 },
-      { x: 2370, y: SOL_Y - 300 },
+      { x: 1930, y: this.SOL_Y - 140 },
+      { x: 2130, y: this.SOL_Y - 220 },
+      { x: 2162, y: this.SOL_Y - 220 },
+      { x: 2370, y: this.SOL_Y - 300 },
       // Zone finale
-      { x: 3380, y: SOL_Y - 180 },
-      { x: 3412, y: SOL_Y - 180 },
+      { x: 3380, y: this.SOL_Y - 180 },
+      { x: 3412, y: this.SOL_Y - 180 },
     ];
 
     for (const pos of positions) {

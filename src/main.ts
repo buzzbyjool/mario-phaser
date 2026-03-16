@@ -22,11 +22,10 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [BootScene, TitleScene, GameScene, GameOverScene],
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 800,
-    height: 600,
     parent: 'game-container',
+    mode: Phaser.Scale.RESIZE,
+    width: '100%',
+    height: '100%',
   },
   pixelArt: true,
   input: {
