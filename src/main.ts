@@ -33,4 +33,11 @@ const config: Phaser.Types.Core.GameConfig = {
   },
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
+
+// S'assurer que le canvas peut recevoir le focus clavier
+game.events.once('ready', () => {
+  game.canvas.setAttribute('tabindex', '0');
+  game.canvas.style.outline = 'none';
+  game.canvas.focus();
+});

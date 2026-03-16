@@ -42,7 +42,7 @@ export class TitleScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Mario sprite décoratif
-    this.add.sprite(width / 2, height / 2 + 30, 'mario', 0).setScale(2);
+    this.add.sprite(width / 2, height / 2 + 30, 'mario0').setScale(2);
 
     // Texte clignotant "PRESS SPACE TO START"
     const startText = this.add.text(width / 2, height * 0.75, 'PRESS SPACE TO START', {
@@ -81,9 +81,14 @@ export class TitleScene extends Phaser.Scene {
       strokeThickness: 2,
     }).setOrigin(0.5);
 
+    // Forcer le focus sur le canvas pour capter les événements clavier
+    this.game.canvas.focus();
+
     // Démarrer au clic / tap / espace (support mobile iOS)
     const demarrer = () => { this.scene.start('GameScene'); };
-    this.input.keyboard!.once('keydown-SPACE', demarrer);
+    if (this.input.keyboard) {
+      this.input.keyboard.once('keydown-SPACE', demarrer);
+    }
     this.input.once('pointerdown', demarrer);
   }
 }
