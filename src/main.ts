@@ -9,10 +9,9 @@ import { GameOverScene } from './scenes/GameOverScene';
  * Configuration Phaser et lancement
  */
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   width: 800,
   height: 600,
-  parent: document.body,
   backgroundColor: '#5C94FC',
   physics: {
     default: 'arcade',
@@ -25,6 +24,9 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 800,
+    height: 600,
+    parent: 'game-container',
   },
   pixelArt: true,
 };
