@@ -95,6 +95,9 @@ export class GameScene extends Phaser.Scene {
 
     // Interface utilisateur (fixée à la caméra)
     this.creerUI();
+
+    // Boutons tactiles mobile
+    this.creerBoutonsMobile();
   }
 
   update(): void {
@@ -279,6 +282,56 @@ export class GameScene extends Phaser.Scene {
     this.viesText = this.add.text(16, 44, `Vies: 3`, style)
       .setScrollFactor(0)
       .setDepth(100);
+  }
+
+  /** Boutons tactiles pour mobile (gauche / droite / saut) */
+  private creerBoutonsMobile(): void {
+    const { width, height } = this.cameras.main;
+    const btnSize = 70;
+    const alpha = 0.45;
+    const depth = 200;
+
+    const mkBtn = (x: number, y: number, label: string) => {
+      const g = this.add.graphics();
+      g.fillStyle(0xffffff, alpha);
+      g.fillCircle(0, 0, btnSize / 2);
+      g.setScrollFactor(0).setDepth(depth);
+      g.setPosition(x, y);
+      g.setInteractive(
+        new Phaser.Geom.Circle(0, 0, btnSize / 2),
+        Phaser.Geom.Circle.Contains,
+      );
+
+      const txt = this.add.text(x, y, label, {
+        fontSize: '26px', fontFamily: 'Arial', color: '#333',
+      }).setOrigin(0.5).setScrollFactor(0).setDepth(depth + 1);
+
+      return { g, txt };
+    };
+
+    // Gauche
+    const bLeft = mkBtn(55, height - 70, '◀');
+    bLeft.g.on('pointerdown', () => { this.player.touchGauche = true; });
+    bLeft.g.on('pointerup',   () => { this.player.touchGauche = false; });
+    bLeft.g.on('pointerout',  () => { this.player.touchGauche = false; });
+
+    // Droite
+    const bRight = mkBtn(140, height - 70, '▶');
+    bRight.g.on('pointerdown', () => { this.player.touchDroite = true; });
+    bRight.g.on('pointerup',   () => { this.player.touchDroite = false; });
+    bRight.g.on('pointerout',  () => { this.player.touchDroite = false; });
+
+    // Saut
+    const bJump = mkBtn(width - 60, height - 70, '▲');
+    bJump.g.on('pointerdown', () => { this.player.touchSaut = true; });
+    bJump.g.on('pointerup',   () => { this.player.touchSaut = false; });
+    bJump.g.on('pointerout',  () => { this.player.touchSaut = false; });
+
+    // Masquer les boutons sur desktop (largeur > 900)
+    if (width > 900) {
+      [bLeft.g, bLeft.txt, bRight.g, bRight.txt, bJump.g, bJump.txt]
+        .forEach(o => o.setAlpha(0));
+    }
   }
 
   /** Déclenché quand Mario atteint le drapeau */

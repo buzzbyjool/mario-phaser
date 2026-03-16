@@ -81,9 +81,9 @@ export class TitleScene extends Phaser.Scene {
       strokeThickness: 2,
     }).setOrigin(0.5);
 
-    // Écouter la touche espace pour démarrer
-    this.input.keyboard!.once('keydown-SPACE', () => {
-      this.scene.start('GameScene');
-    });
+    // Démarrer au clic / tap / espace (support mobile iOS)
+    const demarrer = () => { this.scene.start('GameScene'); };
+    this.input.keyboard!.once('keydown-SPACE', demarrer);
+    this.input.once('pointerdown', demarrer);
   }
 }

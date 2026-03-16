@@ -29,6 +29,9 @@ const config: Phaser.Types.Core.GameConfig = {
     parent: 'game-container',
   },
   pixelArt: true,
+  input: {
+    activePointers: 3,
+  },
 };
 
 new Phaser.Game(config);
