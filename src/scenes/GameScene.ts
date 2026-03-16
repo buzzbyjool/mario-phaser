@@ -57,7 +57,7 @@ export class GameScene extends Phaser.Scene {
     this.creerEnnemis();
 
     // Pièces
-    this.pieces = this.physics.add.group();
+    this.pieces = this.physics.add.group({ allowGravity: false });
     this.creerPieces();
 
     // Collisions
