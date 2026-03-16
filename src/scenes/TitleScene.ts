@@ -25,7 +25,7 @@ export class TitleScene extends Phaser.Scene {
     }
 
     // Titre SUPER MARIO
-    const titre = this.add.text(width / 2, height / 3 - 30, 'SUPER', {
+    const titre = this.add.text(width / 2, height / 3 - 30, 'SUPER MARIO', {
       fontSize: '48px',
       fontFamily: 'Arial Black, Arial',
       color: '#FFD700',
@@ -33,8 +33,8 @@ export class TitleScene extends Phaser.Scene {
       strokeThickness: 6,
     }).setOrigin(0.5);
 
-    this.add.text(width / 2, height / 3 + 30, 'MARIO', {
-      fontSize: '64px',
+    this.add.text(width / 2, height / 3 + 30, 'FOR ARTUR', {
+      fontSize: '48px',
       fontFamily: 'Arial Black, Arial',
       color: '#E52521',
       stroke: '#000',
